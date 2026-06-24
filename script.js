@@ -40,17 +40,17 @@
       excelReport: "CSV Data",
       footer: "ECOWATT ENTERPRISE v3.0 | EGYPT GRID MODULE",
       reportDate: "Report Date",
-      zone: "Zone",
+      zone: "Section",
       diff: "Difference",
       totalAuditCost: "Total Audit Cost",
       kwh: "kWh",
       egp: "EGP",
       tariffRate: "Market Tariff Rate",
       entrySuccess: "Entry Synced Successfully",
-      costBreakdown: "Zone Cost Breakdown",
+      costBreakdown: "Section Cost Breakdown",
       newEntry: "New Entry",
       perKwh: "per kWh",
-      zoneHealth: "Zone Efficiency Health",
+      zoneHealth: "Section Efficiency Health",
       nearingLimit: "Nearing Limit",
       healthy: "Optimal",
       critical: "Critical Overuse",
@@ -80,7 +80,63 @@
       adviceDustDesc: "Schedule frequent filter and condenser checks in dusty months to protect cooling efficiency.",
       high: "High",
       medium: "Medium",
-      low: "Low"
+      low: "Low",
+      budgetExceeded: "Budget Exceeded",
+      approachingBudget: "Approaching Budget",
+      withinBudget: "Within Budget",
+      monthlyBudget: "Monthly Budget",
+      budget: "Budget",
+      setBudget: "Set Budget",
+      perMonth: "/mo",
+      adviceBudgetTitle: "Review Budget Limits",
+      adviceBudgetDesc: "One or more zones are at or near their monthly budget. Consider redistributing load or revising zone limits.",
+      adviceBudgetGreenTitle: "Budgets Under Control",
+      adviceBudgetGreenDesc: "All zones are within their monthly budgets. Keep monitoring to maintain this discipline.",
+      edit: "Edit",
+      updateReading: "Update Reading",
+      cancelEdit: "Cancel Edit",
+      addZone: "Add Section",
+      removeZone: "Remove",
+      deleteEntry: "Delete",
+      confirmDelete: "Delete Entry",
+      deleteConfirmMsg: "Delete this entry?",
+      monthlySummary: "Monthly Summary",
+      monthTotal: "Month Total",
+      dailyAvg: "Daily Average",
+      peakDay: "Peak Day",
+      monthCost: "Month Cost",
+      importCSV: "Import CSV",
+      zoneColor: "Section Color",
+      undo: "Undo",
+      draftRestored: "Draft restored",
+      aiTitle: "AI Data Insights",
+      aiTrend: "Trend",
+      aiUp: "Up",
+      aiDown: "Down",
+      aiStable: "Stable",
+      aiAnomaly: "Anomaly",
+      aiProjection: "Projection",
+      aiAllGood: "All readings within expected range",
+      aiAlertNoData: "Add entries to activate AI analysis",
+      aiPctMore: "more",
+      aiPctLess: "less",
+      aiComparedTo: "vs previous period",
+      exportPNG: "Export PNG",
+      loadMore: "Load More",
+      onbWelcome: "Welcome to EcoWatt!",
+      onbStep1: "Enter daily readings for each zone",
+      onbStep2: "View charts and trends",
+      onbStep3: "Get AI-powered efficiency tips",
+      onbStep4: "Review your history",
+      onbDone: "Got it!",
+      facility: "Facility",
+      addFacility: "Add Facility",
+      facilityName: "Facility Name",
+      rename: "Rename",
+      delete: "Delete",
+      dateFrom: "From",
+      dateTo: "To",
+      dateFilter: "Date Filter"
     },
     ar: {
       title: "إيكو وات مصر",
@@ -118,17 +174,17 @@
       excelReport: "بيانات CSV",
       footer: "إيكو وات إصدار 3.0 | وحدة شبكة مصر",
       reportDate: "تاريخ التقرير",
-      zone: "المنطقة",
+      zone: "قسم",
       diff: "الفرق",
       totalAuditCost: "إجمالي تكلفة التدقيق",
       kwh: "ك.و.س",
       egp: "ج.م",
       tariffRate: "سعر التعريفة",
       entrySuccess: "تم حفظ البيانات بنجاح",
-      costBreakdown: "تفصيل تكلفة المناطق",
+      costBreakdown: "تفصيل تكلفة الأقسام",
       newEntry: "إدخال جديد",
       perKwh: "لكل ك.و.س",
-      zoneHealth: "حالة كفاءة المناطق",
+      zoneHealth: "حالة كفاءة الأقسام",
       nearingLimit: "قريب من الحد",
       healthy: "مثالي",
       critical: "استهلاك حرج",
@@ -158,55 +214,163 @@
       adviceDustDesc: "كثّف تنظيف الفلاتر والمكثفات في أشهر الغبار لحماية كفاءة التبريد.",
       high: "مرتفع",
       medium: "متوسط",
-      low: "منخفض"
+      low: "منخفض",
+      budgetExceeded: "تجاوز الميزانية",
+      approachingBudget: "اقتراب من الميزانية",
+      withinBudget: "ضمن الميزانية",
+      monthlyBudget: "الميزانية الشهرية",
+      budget: "الميزانية",
+      setBudget: "تعيين ميزانية",
+      perMonth: "/شهر",
+      adviceBudgetTitle: "مراجعة حدود الميزانية",
+      adviceBudgetDesc: "منطقة أو أكثر وصلت أو اقتربت من ميزانيتها الشهرية. فكر في إعادة توزيع الأحمال أو مراجعة الحدود.",
+      adviceBudgetGreenTitle: "الميزانية تحت السيطرة",
+      adviceBudgetGreenDesc: "جميع المناطق ضمن ميزانيتها الشهرية. استمر في المراقبة للحفاظ على هذا الانضباط.",
+      edit: "تعديل",
+      updateReading: "تحديث القراءة",
+      cancelEdit: "إلغاء التعديل",
+      addZone: "إضافة قسم",
+      removeZone: "حذف",
+      deleteEntry: "حذف",
+      confirmDelete: "حذف الإدخال",
+      deleteConfirmMsg: "هل تريد حذف هذا الإدخال؟",
+      monthlySummary: "الملخص الشهري",
+      monthTotal: "إجمالي الشهر",
+      dailyAvg: "المتوسط اليومي",
+      peakDay: "أعلى يوم",
+      monthCost: "تكلفة الشهر",
+      importCSV: "استيراد CSV",
+      zoneColor: "لون القسم",
+      undo: "تراجع",
+      draftRestored: "تم استعادة المسودة",
+      aiTitle: "تحليلات الذكاء الاصطناعي",
+      aiTrend: "الاتجاه",
+      aiUp: "صاعد",
+      aiDown: "هابط",
+      aiStable: "مستقر",
+      aiAnomaly: "شذوذ",
+      aiProjection: "توقع",
+      aiAllGood: "جميع القراءات ضمن النطاق المتوقع",
+      aiAlertNoData: "أضف إدخالات لتفعيل التحليل الذكي",
+      aiPctMore: "أكثر",
+      aiPctLess: "أقل",
+      aiComparedTo: "مقارنة بالفترة السابقة",
+      exportPNG: "تصدير PNG",
+      loadMore: "عرض المزيد",
+      onbWelcome: "مرحباً بك في EcoWatt!",
+      onbStep1: "أدخل القراءات اليومية لكل منطقة",
+      onbStep2: "شاهد المخططات والاتجاهات",
+      onbStep3: "احصل على نصائح الكفاءة الذكية",
+      onbStep4: "راجع سجل الإدخالات",
+      onbDone: "حسناً!",
+      facility: "منشأة",
+      addFacility: "إضافة منشأة",
+      facilityName: "اسم المنشأة",
+      rename: "إعادة تسمية",
+      delete: "حذف",
+      dateFrom: "من",
+      dateTo: "إلى",
+      dateFilter: "فلتر التاريخ"
     }
   };
 
-  const defaultMeterNames = {
+  const defaultMeters = {
     en: [
-      "Guest Wings (A-C)",
-      "Commercial Kitchen",
-      "Laundry & Services",
-      "Pool & Spa Area",
-      "Lobby & Administration"
+      { name: "Guest Wings (A-C)", budget: 0, color: "#4A90D9" },
+      { name: "Commercial Kitchen", budget: 0, color: "#E67E22" },
+      { name: "Laundry & Services", budget: 0, color: "#2ECC71" },
+      { name: "Pool & Spa Area", budget: 0, color: "#1ABC9C" },
+      { name: "Lobby & Administration", budget: 0, color: "#9B59B6" }
     ],
     ar: [
-      "أجنحة الضيوف",
-      "المطبخ التجاري",
-      "المغسلة والخدمات",
-      "المسبح والسبا",
-      "اللوبي والإدارة"
+      { name: "أجنحة الضيوف", budget: 0, color: "#4A90D9" },
+      { name: "المطبخ التجاري", budget: 0, color: "#E67E22" },
+      { name: "المغسلة والخدمات", budget: 0, color: "#2ECC71" },
+      { name: "المسبح والسبا", budget: 0, color: "#1ABC9C" },
+      { name: "اللوبي والإدارة", budget: 0, color: "#9B59B6" }
     ]
   };
+
+  function defaultMeterNames(lang) {
+    return defaultMeters[lang].map((m) => m.name);
+  }
+
+  function defaultZoneBudgets(lang) {
+    return defaultMeters[lang].map((m) => m.budget);
+  }
+
+  function defaultZoneColors(lang) {
+    return defaultMeters[lang].map((m) => m.color);
+  }
 
   const state = loadState();
   let chartView = "trends";
   let manualIndex = 0;
+  let editingLogId = null;
+  let hasAnalysis = false;
+  let historyLimit = 8;
+
+  function fac() {
+    return state.facilities.find((f) => f.id === state.activeFacilityId) || state.facilities[0];
+  }
+
+  function facilityLogs() {
+    return state.logs.filter((l) => l.facilityId === state.activeFacilityId);
+  }
+
+  function filteredLogs() {
+    let logs = facilityLogs();
+    if (state.dateFrom) logs = logs.filter((l) => l.date >= state.dateFrom);
+    if (state.dateTo) logs = logs.filter((l) => l.date <= state.dateTo);
+    return logs;
+  }
 
   function loadState() {
     const fallback = {
-      language: "en",
+      language: "ar",
       dark: window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches,
-      meterNames: defaultMeterNames.en.slice(),
-      logs: [
-        {
-          id: uid(),
-          date: "2024-03-01",
-          meters: [
-            { id: uid(), name: "Guest Wings (A-C)", actualValue: 450, idealValue: 400 },
-            { id: uid(), name: "Commercial Kitchen", actualValue: 210, idealValue: 250 },
-            { id: uid(), name: "Laundry & Services", actualValue: 180, idealValue: 150 },
-            { id: uid(), name: "Pool & Spa Area", actualValue: 95, idealValue: 100 },
-            { id: uid(), name: "Lobby & Administration", actualValue: 45, idealValue: 50 }
-          ],
-          totalCost: calculateEGPCost(980)
-        }
-      ]
+      facilities: [{
+        id: uid(),
+        name: "منشأتي",
+        meterNames: defaultMeterNames("ar"),
+        zoneBudgets: defaultZoneBudgets("ar"),
+        zoneColors: defaultZoneColors("ar")
+      }],
+      activeFacilityId: null,
+      dateFrom: "",
+      dateTo: "",
+      logs: []
     };
 
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      return saved && Array.isArray(saved.logs) ? { ...fallback, ...saved } : fallback;
+      if (saved && Array.isArray(saved.logs)) {
+        const merged = { ...fallback, ...saved };
+        if (!merged.facilities || !merged.facilities.length) {
+          merged.facilities = [{
+            id: uid(),
+            name: merged.language === "ar" ? "منشأتي" : "My Facility",
+            meterNames: merged.meterNames || defaultMeterNames(merged.language || "en"),
+            zoneBudgets: merged.zoneBudgets || [],
+            zoneColors: merged.zoneColors || []
+          }];
+          delete merged.meterNames;
+          delete merged.zoneBudgets;
+          delete merged.zoneColors;
+        }
+        if (!merged.activeFacilityId || !merged.facilities.some((f) => f.id === merged.activeFacilityId)) {
+          merged.activeFacilityId = merged.facilities[0].id;
+        }
+        merged.facilities.forEach((fac) => {
+          const lang = merged.language || "en";
+          if (!Array.isArray(fac.zoneBudgets)) fac.zoneBudgets = [];
+          while (fac.zoneBudgets.length < fac.meterNames.length) fac.zoneBudgets.push(0);
+          if (!Array.isArray(fac.zoneColors)) fac.zoneColors = [];
+          while (fac.zoneColors.length < fac.meterNames.length) fac.zoneColors.push(defaultZoneColors(lang)[fac.zoneColors.length] || "#888");
+        });
+        return merged;
+      }
+      return fallback;
     } catch (error) {
       return fallback;
     }
@@ -240,7 +404,8 @@
   }
 
   function latestLog() {
-    return state.logs[state.logs.length - 1];
+    const logs = facilityLogs();
+    return logs[logs.length - 1] || { meters: [], totalCost: 0 };
   }
 
   function totals(log) {
@@ -269,12 +434,86 @@
       .replaceAll("'", "&#039;");
   }
 
+  function showToast(message, options) {
+    const opts = Object.assign({ duration: 4000, action: null, onAction: null }, options);
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    const text = document.createElement("span");
+    text.textContent = message;
+    toast.appendChild(text);
+    if (opts.action && opts.onAction) {
+      const btn = document.createElement("button");
+      btn.className = "toast-action";
+      btn.textContent = opts.action;
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        opts.onAction();
+        dismiss();
+      });
+      toast.appendChild(btn);
+    }
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add("show"));
+    let timer = setTimeout(dismiss, opts.duration);
+    function dismiss() {
+      clearTimeout(timer);
+      toast.classList.remove("show");
+      toast.addEventListener("transitionend", () => toast.remove(), { once: true });
+      setTimeout(() => { if (toast.parentNode) toast.remove(); }, 400);
+    }
+    return { dismiss };
+  }
+
   function init() {
     bindEvents();
     document.getElementById("entryDate").value = todayISO();
+    if (state.dateFrom) document.getElementById("dateFrom").value = state.dateFrom;
+    if (state.dateTo) document.getElementById("dateTo").value = state.dateTo;
     applyLanguage();
     renderAll();
+    renderFacilitySelector();
     window.addEventListener("resize", drawChart);
+    restoreDraft();
+    showOnboarding();
+  }
+
+  const DRAFT_KEY = "ecowatt_draft";
+
+  function saveDraft() {
+    const form = document.getElementById("logForm");
+    if (!form || document.getElementById("successSummary").classList.contains("hidden") === false) return;
+    const data = { date: document.getElementById("entryDate").value };
+    fac().meterNames.forEach((_, index) => {
+      const actual = form.elements[`actual-${index}`];
+      const ideal = form.elements[`ideal-${index}`];
+      if (actual) data[`a-${index}`] = actual.value;
+      if (ideal) data[`i-${index}`] = ideal.value;
+    });
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  function restoreDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      const form = document.getElementById("logForm");
+      if (!form) return;
+      let hasData = false;
+      fac().meterNames.forEach((_, index) => {
+        const actual = form.elements[`actual-${index}`];
+        const ideal = form.elements[`ideal-${index}`];
+        if (actual && data[`a-${index}`]) { actual.value = data[`a-${index}`]; if (data[`a-${index}`]) hasData = true; }
+        if (ideal && data[`i-${index}`]) { ideal.value = data[`i-${index}`]; if (data[`i-${index}`]) hasData = true; }
+      });
+      if (data.date) document.getElementById("entryDate").value = data.date;
+      if (hasData) showToast(t("draftRestored"));
+    } catch (e) {}
+  }
+
+  function clearDraft() {
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
   }
 
   function bindEvents() {
@@ -282,18 +521,52 @@
     document.getElementById("languageBtn").addEventListener("click", toggleLanguage);
     document.getElementById("printBtn").addEventListener("click", () => window.print());
     document.getElementById("csvBtn").addEventListener("click", exportCSV);
+    document.getElementById("importCsvInput").addEventListener("change", handleImportCSV);
+    document.getElementById("importCsvBtn").addEventListener("click", () => document.getElementById("importCsvInput").click());
     document.getElementById("infoToggle").addEventListener("click", () => {
       document.getElementById("complianceBox").classList.toggle("hidden");
     });
     document.getElementById("trendViewBtn").addEventListener("click", () => setChartView("trends"));
     document.getElementById("zoneViewBtn").addEventListener("click", () => setChartView("zones"));
+    document.getElementById("exportPngBtn").addEventListener("click", exportChartPNG);
     document.getElementById("refreshAdviceBtn").addEventListener("click", renderAdvice);
     document.getElementById("logForm").addEventListener("submit", submitLog);
+    document.getElementById("entryDate").addEventListener("input", saveDraft);
     document.getElementById("newEntryBtn").addEventListener("click", showForm);
     document.getElementById("editZonesBtn").addEventListener("click", startZoneEdit);
     document.getElementById("cancelZonesBtn").addEventListener("click", stopZoneEdit);
     document.getElementById("saveZonesBtn").addEventListener("click", saveZoneEdit);
     document.getElementById("resetDataBtn").addEventListener("click", resetData);
+    document.getElementById("loadMoreBtn").addEventListener("click", () => {
+      historyLimit += 8;
+      renderHistory();
+    });
+
+    document.getElementById("zoneEditor").addEventListener("click", (e) => {
+      if (e.target.classList.contains("add-zone-btn")) {
+        const row = document.createElement("div");
+        row.className = "zone-edit-row";
+        row.draggable = true;
+        row.innerHTML = `
+          <span class="drag-handle" aria-label="Drag to reorder">⠿</span>
+          <input value="" aria-label="New zone" class="zone-name-input" placeholder="Zone name">
+          <label class="budget-label">
+            <span>${escapeHTML(t("budget"))}</span>
+            <input type="number" min="0" step="1" value="0" class="zone-budget-input" placeholder="0">
+          </label>
+          <label class="color-label" title="${escapeHTML(t("zoneColor"))}">
+            <input type="color" value="#888" class="zone-color-input">
+          </label>
+          <button class="remove-zone-btn" type="button" title="${escapeHTML(t("removeZone"))}">×</button>
+        `;
+        e.target.before(row);
+      } else if (e.target.classList.contains("remove-zone-btn")) {
+        const row = e.target.closest(".zone-edit-row");
+        if (row && document.querySelectorAll("#zoneEditor .zone-edit-row").length > 1) {
+          row.remove();
+        }
+      }
+    });
 
     ["manualBtn", "manualMobileBtn"].forEach((id) => {
       document.getElementById(id).addEventListener("click", openManual);
@@ -301,6 +574,32 @@
     document.getElementById("closeManualBtn").addEventListener("click", closeManual);
     document.getElementById("manualPrevBtn").addEventListener("click", () => moveManual(-1));
     document.getElementById("manualNextBtn").addEventListener("click", () => moveManual(1));
+    document.getElementById("onbDoneBtn").addEventListener("click", dismissOnboarding);
+    document.getElementById("facilityManageBtn").addEventListener("click", openFacilityModal);
+    document.getElementById("closeFacilityModal").addEventListener("click", closeFacilityModal);
+    document.getElementById("addFacilityBtn").addEventListener("click", () => {
+      addNewFacility();
+      renderFacilitySelector();
+    });
+    document.getElementById("facilityModal").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) closeFacilityModal();
+    });
+    document.getElementById("sidebarToggle").addEventListener("click", toggleSidebar);
+    document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
+    document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSidebar(); });
+    document.getElementById("dateFrom").addEventListener("change", (e) => {
+      state.dateFrom = e.target.value;
+      saveState();
+      drawChart();
+      renderAdvice();
+    });
+    document.getElementById("dateTo").addEventListener("change", (e) => {
+      state.dateTo = e.target.value;
+      saveState();
+      drawChart();
+      renderAdvice();
+    });
   }
 
   function toggleTheme() {
@@ -311,9 +610,13 @@
 
   function toggleLanguage() {
     const wasDefault =
-      JSON.stringify(state.meterNames) === JSON.stringify(defaultMeterNames[state.language]);
+      JSON.stringify(fac().meterNames) === JSON.stringify(defaultMeterNames(state.language));
     state.language = state.language === "en" ? "ar" : "en";
-    if (wasDefault) state.meterNames = defaultMeterNames[state.language].slice();
+    if (wasDefault) {
+      fac().meterNames = defaultMeterNames(state.language);
+      fac().zoneBudgets = defaultZoneBudgets(state.language);
+      fac().zoneColors = defaultZoneColors(state.language);
+    }
     saveState();
     applyLanguage();
     renderAll();
@@ -338,6 +641,7 @@
   function renderAll() {
     renderStats();
     renderStatus();
+    renderMonthlySummary();
     renderMeterFields();
     renderHistory();
     renderAdvice();
@@ -388,16 +692,35 @@
     document.getElementById("activeZones").textContent = formatNumber(log.meters.length);
     document.getElementById("currentTier").textContent = pricing.label;
 
+    const budgets = fac().zoneBudgets || [];
+    const colors = fac().zoneColors || [];
     document.getElementById("zoneGrid").innerHTML = log.meters
-      .map((meter) => {
+      .map((meter, idx) => {
         const ratio = meter.idealValue > 0 ? meter.actualValue / meter.idealValue : 0;
         const over = ratio > 1;
         const nearing = ratio > 0.9 && ratio <= 1;
         const color = over ? "var(--red)" : nearing ? "var(--amber)" : "var(--green)";
         const label = over ? t("critical") : nearing ? t("nearingLimit") : t("healthy");
         const pricingInfo = getPricingDetails(meter.actualValue);
+        const budgetVal = budgets[idx] || 0;
+        const zoneColor = colors[idx] || "#888";
+        let budgetHtml = "";
+        if (budgetVal > 0) {
+          const budgetRatio = meter.actualValue / budgetVal;
+          const bOver = budgetRatio >= 1;
+          const bNear = budgetRatio >= 0.8 && budgetRatio < 1;
+          const bColor = bOver ? "var(--red)" : bNear ? "var(--amber)" : "var(--green)";
+          const bLabel = bOver ? t("budgetExceeded") : bNear ? t("approachingBudget") : t("withinBudget");
+          budgetHtml = `
+            <div class="budget-bar"><span style="width:${Math.min(budgetRatio * 100, 100)}%; background:${bColor}"></span></div>
+            <div class="zone-footer">
+              <span style="color:${bColor}">${escapeHTML(bLabel)}</span>
+              <span>${formatNumber(meter.actualValue)} / ${formatNumber(budgetVal)} ${escapeHTML(t("kwh"))}</span>
+            </div>
+          `;
+        }
         return `
-          <article class="zone-card">
+          <article class="zone-card" style="border-left:4px solid ${zoneColor}">
             <strong>${escapeHTML(meter.name)}</strong>
             <small>${formatNumber(pricingInfo.rate, 2)} ${escapeHTML(t("egp"))} ${escapeHTML(t("perKwh"))} | ${escapeHTML(pricingInfo.label)}</small>
             <div class="zone-bar"><span style="width:${Math.min(ratio * 100, 100)}%; background:${color}"></span></div>
@@ -405,14 +728,67 @@
               <span style="color:${color}">${escapeHTML(label)}</span>
               <span>${formatNumber(meter.actualValue)} / ${formatNumber(meter.idealValue)} ${escapeHTML(t("kwh"))}</span>
             </div>
+            ${budgetHtml}
           </article>
         `;
       })
       .join("");
   }
 
+  function renderMonthlySummary() {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const monthLogs = facilityLogs().filter((log) => {
+      const d = new Date(log.date);
+      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+    });
+    let totalActual = 0;
+    let maxDay = 0;
+    let totalCost = 0;
+    monthLogs.forEach((log) => {
+      const t = totals(log);
+      totalActual += t.actual;
+      maxDay = Math.max(maxDay, t.actual);
+      totalCost += log.totalCost;
+    });
+    const daysSoFar = Math.max(1, now.getDate());
+    const dailyAvg = totalActual / daysSoFar;
+
+    const el = document.getElementById("monthlySummary");
+    el.innerHTML = `
+      <div class="summary-row">
+        <div class="summary-stat">
+          <span class="summary-value">${formatNumber(totalActual)}</span>
+          <span class="summary-label">${escapeHTML(t("monthTotal"))} (${escapeHTML(t("kwh"))})</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-value">${formatNumber(dailyAvg)}</span>
+          <span class="summary-label">${escapeHTML(t("dailyAvg"))} (${escapeHTML(t("kwh"))})</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-value">${formatNumber(maxDay)}</span>
+          <span class="summary-label">${escapeHTML(t("peakDay"))} (${escapeHTML(t("kwh"))})</span>
+        </div>
+        <div class="summary-stat">
+          <span class="summary-value">${formatNumber(totalCost, 2)}</span>
+          <span class="summary-label">${escapeHTML(t("monthCost"))} (${escapeHTML(t("egp"))})</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function exportChartPNG() {
+    const canvas = document.getElementById("energyChart");
+    if (!canvas) return;
+    const link = document.createElement("a");
+    link.download = `ecowatt-${chartView}-${new Date().toISOString().slice(0, 10)}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+
   function renderMeterFields() {
-    const fields = state.meterNames
+    const fields = fac().meterNames
       .map(
         (name, index) => `
           <article class="meter-row">
@@ -432,12 +808,13 @@
       )
       .join("");
     document.getElementById("meterFields").innerHTML = fields;
+    document.querySelectorAll("#meterFields input").forEach((el) => el.addEventListener("input", saveDraft));
   }
 
   function submitLog(event) {
     event.preventDefault();
     const form = event.currentTarget;
-    const meters = state.meterNames
+    const meters = fac().meterNames
       .map((name, index) => {
         const actual = parseFloat(form.elements[`actual-${index}`].value || "0");
         const ideal = parseFloat(form.elements[`ideal-${index}`].value || "0");
@@ -448,17 +825,35 @@
     if (meters.length === 0) return;
 
     const totalKwh = meters.reduce((sum, meter) => sum + meter.actualValue, 0);
-    const log = {
-      id: uid(),
-      date: document.getElementById("entryDate").value || todayISO(),
-      meters,
-      totalCost: calculateEGPCost(totalKwh)
-    };
+    const date = document.getElementById("entryDate").value || todayISO();
 
-    state.logs.push(log);
+    let editedLog;
+    if (editingLogId) {
+      const existing = state.logs.find((l) => l.id === editingLogId);
+      existing.date = date;
+      existing.meters = meters;
+      existing.totalCost = calculateEGPCost(totalKwh);
+      editedLog = existing;
+      editingLogId = null;
+      form.querySelector("button[type=submit]").textContent = t("syncReadings");
+      const cancelBtn = document.getElementById("cancelEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("hidden");
+      document.getElementById("historyBody").classList.remove("editing");
+    } else {
+      editedLog = {
+        id: uid(),
+        date,
+        meters,
+        facilityId: state.activeFacilityId,
+        totalCost: calculateEGPCost(totalKwh)
+      };
+      state.logs.push(editedLog);
+    }
+
     saveState();
+    clearDraft();
     renderAll();
-    showSummary(log);
+    showSummary(editedLog);
   }
 
   function showSummary(log) {
@@ -479,6 +874,13 @@
   }
 
   function showForm() {
+    if (editingLogId) {
+      editingLogId = null;
+      document.getElementById("logForm").querySelector("button[type=submit]").textContent = t("syncReadings");
+      const cancelBtn = document.getElementById("cancelEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("hidden");
+      document.getElementById("historyBody").classList.remove("editing");
+    }
     document.getElementById("successSummary").classList.add("hidden");
     document.getElementById("logForm").classList.remove("hidden");
     document.getElementById("logForm").reset();
@@ -486,14 +888,73 @@
   }
 
   function startZoneEdit() {
-    document.getElementById("zoneEditor").innerHTML = state.meterNames
-      .map((name, index) => `<input value="${escapeHTML(name)}" data-zone-index="${index}" aria-label="Zone ${index + 1}">`)
-      .join("");
-    document.getElementById("zoneEditor").classList.remove("hidden");
+    const budget = fac().zoneBudgets || [];
+    const colors = fac().zoneColors || [];
+    const editor = document.getElementById("zoneEditor");
+    editor.innerHTML = fac().meterNames
+      .map((name, index) => `
+        <div class="zone-edit-row" draggable="true" data-zone-row="${index}">
+          <span class="drag-handle" aria-label="Drag to reorder">⠿</span>
+          <input value="${escapeHTML(name)}" data-zone-index="${index}" aria-label="Zone ${index + 1}" class="zone-name-input">
+          <label class="budget-label">
+            <span>${escapeHTML(t("budget"))}</span>
+            <input type="number" min="0" step="1" value="${budget[index] || 0}" data-budget-index="${index}" class="zone-budget-input" placeholder="0">
+          </label>
+          <label class="color-label" title="${escapeHTML(t("zoneColor"))}">
+            <input type="color" value="${colors[index] || "#888"}" data-color-index="${index}" class="zone-color-input">
+          </label>
+          <button class="remove-zone-btn" type="button" title="${escapeHTML(t("removeZone"))}">×</button>
+        </div>
+      `)
+      .join("") + `<button class="add-zone-btn" type="button">+ ${escapeHTML(t("addZone"))}</button>`;
+    editor.classList.remove("hidden");
     document.getElementById("logForm").classList.add("hidden");
     document.getElementById("editZonesBtn").classList.add("hidden");
     document.getElementById("cancelZonesBtn").classList.remove("hidden");
     document.getElementById("saveZonesBtn").classList.remove("hidden");
+    initDragSort(editor);
+  }
+
+  function initDragSort(container) {
+    let dragSrc = null;
+    container.addEventListener("dragstart", (e) => {
+      const row = e.target.closest(".zone-edit-row");
+      if (!row) return;
+      dragSrc = row;
+      row.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", "");
+    });
+    container.addEventListener("dragend", (e) => {
+      const row = e.target.closest(".zone-edit-row");
+      if (row) row.classList.remove("dragging");
+      document.querySelectorAll(".zone-edit-row").forEach((r) => r.classList.remove("drag-over"));
+    });
+    container.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      const row = e.target.closest(".zone-edit-row");
+      if (!row || row === dragSrc) return;
+      row.classList.add("drag-over");
+      const rect = row.getBoundingClientRect();
+      const after = e.clientY > rect.top + rect.height / 2;
+      row.style.borderBottom = after ? "2px solid var(--blue)" : "";
+      row.style.borderTop = !after ? "2px solid var(--blue)" : "";
+    });
+    container.addEventListener("dragleave", (e) => {
+      const row = e.target.closest(".zone-edit-row");
+      if (row) { row.classList.remove("drag-over"); row.style.borderBottom = ""; row.style.borderTop = ""; }
+    });
+    container.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const row = e.target.closest(".zone-edit-row");
+      if (!row || !dragSrc || row === dragSrc) return;
+      const rect = row.getBoundingClientRect();
+      const after = e.clientY > rect.top + rect.height / 2;
+      if (after) row.parentNode.insertBefore(dragSrc, row.nextSibling);
+      else row.parentNode.insertBefore(dragSrc, row);
+      document.querySelectorAll(".zone-edit-row").forEach((r) => { r.classList.remove("drag-over"); r.style.borderBottom = ""; r.style.borderTop = ""; });
+      dragSrc = null;
+    });
   }
 
   function stopZoneEdit() {
@@ -505,34 +966,231 @@
   }
 
   function saveZoneEdit() {
-    const names = Array.from(document.querySelectorAll("#zoneEditor input"))
-      .map((input) => input.value.trim())
-      .filter(Boolean);
+    const nameInputs = document.querySelectorAll("#zoneEditor .zone-name-input");
+    const budgetInputs = document.querySelectorAll("#zoneEditor .zone-budget-input");
+    const colorInputs = document.querySelectorAll("#zoneEditor .zone-color-input");
+    const names = [];
+    const budgets = [];
+    const colors = [];
+    nameInputs.forEach((input) => {
+      const val = input.value.trim();
+      if (val) names.push(val);
+    });
+    budgetInputs.forEach((input) => {
+      budgets.push(parseFloat(input.value) || 0);
+    });
+    colorInputs.forEach((input) => {
+      colors.push(input.value || "#888");
+    });
     if (names.length > 0) {
-      state.meterNames = names;
+      fac().meterNames = names;
+      fac().zoneBudgets = budgets;
+      fac().zoneColors = colors;
       saveState();
       renderMeterFields();
     }
     stopZoneEdit();
   }
 
+  function switchFacility(id) {
+    if (id === state.activeFacilityId) return;
+    state.activeFacilityId = id;
+    saveState();
+    renderAll();
+    renderFacilitySelector();
+  }
+
+  function addNewFacility() {
+    const name = prompt(t("facilityName"));
+    if (!name || !name.trim()) return;
+    const fac = {
+      id: uid(),
+      name: name.trim(),
+      meterNames: defaultMeterNames(state.language),
+      zoneBudgets: defaultZoneBudgets(state.language),
+      zoneColors: defaultZoneColors(state.language)
+    };
+    state.facilities.push(fac);
+    state.activeFacilityId = fac.id;
+    saveState();
+    renderAll();
+    renderFacilitySelector();
+  }
+
+  function renderFacilitySelector() {
+    const list = document.getElementById("facilityModalList");
+    const single = state.facilities.length <= 1;
+    list.innerHTML = state.facilities
+      .map((f) => {
+        const active = f.id === state.activeFacilityId;
+        return `
+          <div class="facility-modal-row">
+            <button class="facility-modal-item${active ? " active" : ""}" type="button" data-id="${escapeHTML(f.id)}">${active ? "✓ " : ""}${escapeHTML(f.name)}</button>
+            <button class="facility-modal-action rename-fac" data-id="${escapeHTML(f.id)}" type="button" title="${escapeHTML(t("rename"))}">✎</button>
+            ${single ? "" : `<button class="facility-modal-action delete-fac" data-id="${escapeHTML(f.id)}" type="button" title="${escapeHTML(t("delete"))}">🗑</button>`}
+          </div>
+        `;
+      })
+      .join("");
+    document.querySelectorAll("#facilityModalList .facility-modal-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchFacility(btn.dataset.id);
+        closeFacilityModal();
+      });
+    });
+    document.querySelectorAll("#facilityModalList .rename-fac").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        renameFacility(btn.dataset.id);
+      });
+    });
+    document.querySelectorAll("#facilityModalList .delete-fac").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        removeFacility(btn.dataset.id);
+      });
+    });
+    document.getElementById("sidebarFacilityName").textContent = fac().name;
+  }
+
+  function openFacilityModal() {
+    renderFacilitySelector();
+    document.getElementById("facilityModal").classList.remove("hidden");
+  }
+
+  function closeFacilityModal() {
+    document.getElementById("facilityModal").classList.add("hidden");
+  }
+
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+    document.getElementById("sidebarOverlay").classList.toggle("open");
+  }
+
+  function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sidebarOverlay").classList.remove("open");
+  }
+
+  function renameFacility(id) {
+    const f = state.facilities.find((f) => f.id === id);
+    if (!f) return;
+    const name = prompt(t("facilityName"), f.name);
+    if (!name || !name.trim() || name.trim() === f.name) return;
+    f.name = name.trim();
+    saveState();
+    renderFacilitySelector();
+    renderAll();
+  }
+
+  function removeFacility(id) {
+    if (state.facilities.length <= 1) return;
+    const name = state.facilities.find((f) => f.id === id)?.name;
+    if (!confirm(state.language === "ar" ? `حذف المنشأة "${name}" وجميع بياناتها؟` : `Delete facility "${name}" and all its data?`)) return;
+    state.facilities = state.facilities.filter((f) => f.id !== id);
+    state.logs = state.logs.filter((l) => l.facilityId !== id);
+    if (state.activeFacilityId === id) {
+      state.activeFacilityId = state.facilities[0].id;
+    }
+    saveState();
+    renderFacilitySelector();
+    renderAll();
+  }
+
+  function editLog(id) {
+    const log = state.logs.find((l) => l.id === id);
+    if (!log) return;
+    editingLogId = id;
+    document.getElementById("entryDate").value = log.date;
+    const form = document.getElementById("logForm");
+    log.meters.forEach((meter, index) => {
+      const actualInput = form.elements[`actual-${index}`];
+      const idealInput = form.elements[`ideal-${index}`];
+      if (actualInput) actualInput.value = meter.actualValue;
+      if (idealInput) idealInput.value = meter.idealValue;
+    });
+    document.getElementById("successSummary").classList.add("hidden");
+    document.getElementById("logForm").classList.remove("hidden");
+
+    const submitBtn = form.querySelector("button[type=submit]");
+    submitBtn.textContent = t("updateReading");
+
+    if (!document.getElementById("cancelEditBtn")) {
+      const cancelBtn = document.createElement("button");
+      cancelBtn.id = "cancelEditBtn";
+      cancelBtn.type = "button";
+      cancelBtn.className = "ghost-btn cancel-edit-btn";
+      cancelBtn.textContent = t("cancelEdit");
+      cancelBtn.addEventListener("click", cancelEditing);
+      submitBtn.parentNode.insertBefore(cancelBtn, submitBtn.nextSibling);
+    } else {
+      document.getElementById("cancelEditBtn").classList.remove("hidden");
+    }
+
+    document.getElementById("historyBody").classList.add("editing");
+    window.scrollTo({ top: document.querySelector(".log-card").offsetTop - 20, behavior: "smooth" });
+  }
+
+  function cancelEditing() {
+    editingLogId = null;
+    const form = document.getElementById("logForm");
+    form.querySelector("button[type=submit]").textContent = t("syncReadings");
+    const cancelBtn = document.getElementById("cancelEditBtn");
+    if (cancelBtn) cancelBtn.classList.add("hidden");
+    document.getElementById("historyBody").classList.remove("editing");
+    showForm();
+  }
+
+  function deleteLog(id) {
+    const idx = state.logs.findIndex((l) => l.id === id);
+    if (idx === -1) return;
+    const removed = state.logs.splice(idx, 1)[0];
+    if (editingLogId === id) cancelEditing();
+    saveState();
+    renderAll();
+    showToast(t("deleteConfirmMsg"), {
+      duration: 5000,
+      action: t("undo"),
+      onAction: () => {
+        state.logs.push(removed);
+        saveState();
+        renderAll();
+      }
+    });
+  }
+
   function renderHistory() {
-    document.getElementById("historyBody").innerHTML = state.logs
-      .slice()
-      .reverse()
-      .slice(0, 8)
+    const rows = [...facilityLogs()].reverse();
+    const limited = rows.slice(0, historyLimit);
+    document.getElementById("historyBody").innerHTML = limited
       .map((log) => {
         const total = totals(log);
         return `
-          <tr>
+          <tr class="${editingLogId === log.id ? "editing-row" : ""}">
             <td>${escapeHTML(new Date(log.date).toLocaleDateString(state.language))}</td>
             <td>${formatNumber(total.actual)} ${escapeHTML(t("kwh"))}</td>
             <td>${formatNumber(total.ideal)} ${escapeHTML(t("kwh"))}</td>
             <td>${formatNumber(log.totalCost, 2)} ${escapeHTML(t("egp"))}</td>
+            <td class="action-col">
+              <button class="edit-btn" data-id="${escapeHTML(log.id)}" type="button" title="${escapeHTML(t("edit"))}">✎</button>
+              <button class="delete-btn" data-id="${escapeHTML(log.id)}" type="button" title="${escapeHTML(t("deleteEntry"))}">🗑</button>
+            </td>
           </tr>
         `;
       })
       .join("");
+    document.querySelectorAll("#historyBody .edit-btn").forEach((btn) => {
+      btn.addEventListener("click", () => editLog(btn.dataset.id));
+    });
+    document.querySelectorAll("#historyBody .delete-btn").forEach((btn) => {
+      btn.addEventListener("click", () => deleteLog(btn.dataset.id));
+    });
+    const btn = document.getElementById("loadMoreBtn");
+    if (rows.length > historyLimit) {
+      btn.classList.remove("hidden");
+    } else {
+      btn.classList.add("hidden");
+    }
   }
 
   function setChartView(view) {
@@ -546,6 +1204,9 @@
   function drawChart() {
     const canvas = document.getElementById("energyChart");
     if (!canvas) return;
+    const skeleton = document.getElementById("chartSkeleton");
+    if (skeleton) skeleton.classList.remove("hidden");
+
     const rect = canvas.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
     canvas.width = Math.max(320, Math.floor(rect.width * ratio));
@@ -557,6 +1218,8 @@
 
     if (chartView === "zones") drawZoneChart(ctx, rect.width, rect.height);
     else drawTrendChart(ctx, rect.width, rect.height);
+
+    if (skeleton) skeleton.classList.add("hidden");
   }
 
   function chartColors() {
@@ -573,9 +1236,18 @@
   function drawTrendChart(ctx, width, height) {
     const colors = chartColors();
     const pad = { top: 20, right: 26, bottom: 48, left: state.language === "ar" ? 26 : 46 };
-    const data = state.logs
+    const data = filteredLogs()
       .map((log) => ({ date: log.date, ...totals(log) }))
       .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (!data.length) {
+      ctx.fillStyle = colors.text;
+      ctx.font = "800 14px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText(t("aiAlertNoData"), width / 2, height / 2);
+      return;
+    }
+
     const values = data.flatMap((item) => [item.actual, item.ideal]);
     const max = Math.max(100, ...values) * 1.12;
     const plotW = width - pad.left - pad.right;
@@ -600,11 +1272,19 @@
       const label = new Date(item.date).toLocaleDateString(state.language, { day: "numeric", month: "short" });
       ctx.fillText(label, x, height - 18);
     });
+
+    ctx.fillStyle = colors.actual;
+    ctx.font = "700 12px system-ui";
+    data.forEach((item, index) => {
+      const [x, y] = point(item, index, "actual");
+      ctx.fillText(formatNumber(item.actual), x, y - 10);
+    });
   }
 
   function drawZoneChart(ctx, width, height) {
     const colors = chartColors();
     const log = latestLog();
+    const zoneColors = fac().zoneColors || [];
     const pad = { top: 18, right: 24, bottom: 32, left: state.language === "ar" ? 24 : 130 };
     const plotW = width - pad.left - pad.right;
     const rowH = Math.min(54, (height - pad.top - pad.bottom) / Math.max(log.meters.length, 1));
@@ -630,8 +1310,18 @@
 
       const actualW = (meter.actualValue / max) * plotW;
       const idealW = (meter.idealValue / max) * plotW;
+      const zColor = zoneColors[index] || colors.actual;
       roundRect(ctx, pad.left, y + 2, idealW, 14, 7, colors.ideal, 0.45);
-      roundRect(ctx, pad.left, y + 21, actualW, 14, 7, colors.actual, 1);
+      roundRect(ctx, pad.left, y + 21, actualW, 14, 7, zColor, 1);
+
+      ctx.font = "700 11px system-ui";
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = "left";
+      const idealLabel = formatNumber(meter.idealValue);
+      const actualLabel = formatNumber(meter.actualValue);
+      ctx.fillText(idealLabel, pad.left + idealW + 6, y + 14);
+      ctx.fillStyle = zColor;
+      ctx.fillText(actualLabel, pad.left + actualW + 6, y + 33);
     });
   }
 
@@ -705,11 +1395,90 @@
     ctx.restore();
   }
 
+  function analyzeData() {
+    const sorted = [...filteredLogs()].sort((a, b) => new Date(a.date) - new Date(b.date));
+    if (sorted.length < 2) return null;
+
+    const split = Math.max(1, Math.floor(sorted.length * 0.65));
+    const recent = sorted.slice(split);
+    const prev = sorted.slice(0, split);
+
+    function avgTotals(entries) {
+      if (!entries.length) return { actual: 0, ideal: 0 };
+      let a = 0, i = 0;
+      entries.forEach((e) => { const t = totals(e); a += t.actual; i += t.ideal; });
+      return { actual: a / entries.length, ideal: i / entries.length };
+    }
+
+    const recentAvg = avgTotals(recent);
+    const prevAvg = avgTotals(prev);
+    const trendDir = recentAvg.actual > prevAvg.actual * 1.05 ? "up" : recentAvg.actual < prevAvg.actual * 0.95 ? "down" : "stable";
+    const trendPct = prevAvg.actual > 0 ? Math.round(Math.abs((recentAvg.actual - prevAvg.actual) / prevAvg.actual * 100)) : 0;
+
+    const zoneNames = fac().meterNames;
+    const anomalies = [];
+    zoneNames.forEach((name, idx) => {
+      const vals = sorted.map((l) => {
+        const m = l.meters.find((m) => m.name === name);
+        return m ? m.actualValue : 0;
+      }).filter((v) => v > 0);
+      if (vals.length < 3) return;
+      const mean = vals.reduce((s, v) => s + v, 0) / vals.length;
+      const std = Math.sqrt(vals.reduce((s, v) => s + (v - mean) ** 2, 0) / vals.length);
+      if (std < 1) return;
+      const last = vals[vals.length - 1];
+      if (Math.abs(last - mean) > 2 * std) {
+        anomalies.push({ zone: name, value: last, avg: Math.round(mean), deviation: Math.round((last - mean) / std * 10) / 10 });
+      }
+    });
+
+    const now = new Date();
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const dayOfMonth = now.getDate();
+    const monthLogs = sorted.filter((l) => {
+      const d = new Date(l.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+    let monthTotal = 0;
+    monthLogs.forEach((l) => { monthTotal += totals(l).actual; });
+    const monthAvg = Math.max(1, dayOfMonth);
+    const projected = Math.round((monthTotal / monthAvg) * daysInMonth);
+    const tierDiff = projected > 1000 ? projected - 1000 : 1000 - projected;
+    const tierStatus = projected > 1000 ? "over" : projected > 850 ? "near" : "safe";
+
+    const dayTotals = {};
+    sorted.forEach((l) => {
+      const d = new Date(l.date);
+      const day = d.toLocaleDateString("en", { weekday: "long" });
+      const t = totals(l);
+      if (!dayTotals[day]) dayTotals[day] = { sum: 0, count: 0 };
+      dayTotals[day].sum += t.actual;
+      dayTotals[day].count++;
+    });
+    const dayPattern = Object.entries(dayTotals)
+      .map(([day, data]) => ({ day, avg: data.sum / data.count }))
+      .sort((a, b) => b.avg - a.avg);
+
+    return {
+      trendDir, trendPct, recentAvg: recentAvg.actual, prevAvg: prevAvg.actual,
+      anomalies, projected, tierDiff, tierStatus, dayPattern,
+      totalLogs: sorted.length, monthTotal, monthLogs: monthLogs.length
+    };
+  }
+
   function renderAdvice() {
     const log = latestLog();
     const total = totals(log);
     const overZones = log.meters.filter((meter) => meter.idealValue > 0 && meter.actualValue > meter.idealValue);
+    const budgets = fac().zoneBudgets || [];
     const advice = [];
+    const analysis = analyzeData();
+    hasAnalysis = analysis !== null;
+
+    if (analysis && analysis.anomalies.length) {
+      const a = analysis.anomalies[0];
+      advice.push({ impact: "high", title: `${t("aiAnomaly")}: ${escapeHTML(a.zone)}`, desc: `${escapeHTML(a.zone)} at ${formatNumber(a.value)} kWh (avg ${formatNumber(a.avg)} kWh, ${a.deviation}σ)` });
+    }
 
     if (overZones.length) {
       advice.push({ impact: "high", title: t("adviceOverTitle"), desc: t("adviceOverDesc") });
@@ -717,29 +1486,103 @@
     if (total.actual >= 900) {
       advice.push({ impact: "high", title: t("adviceTierTitle"), desc: t("adviceTierDesc") });
     }
-    advice.push({ impact: "medium", title: t("adviceBalanceTitle"), desc: t("adviceBalanceDesc") });
-    advice.push({ impact: "medium", title: t("adviceDustTitle"), desc: t("adviceDustDesc") });
-    if (!overZones.length && total.actual < 900) {
-      advice.push({ impact: "low", title: t("adviceHealthyTitle"), desc: t("adviceHealthyDesc") });
+
+    if (analysis && analysis.trendDir !== "stable") {
+      const dirLabel = analysis.trendDir === "up" ? t("aiUp") : t("aiDown");
+      const dirWord = analysis.trendDir === "up" ? t("aiPctMore") : t("aiPctLess");
+      advice.push({ impact: analysis.trendDir === "up" ? "high" : "low", title: `${t("aiTrend")}: ${dirLabel}`, desc: `${formatNumber(analysis.trendPct)}% ${dirWord} ${t("aiComparedTo")} (${formatNumber(analysis.prevAvg)} → ${formatNumber(analysis.recentAvg)})` });
     }
 
-    document.getElementById("adviceGrid").innerHTML = advice
-      .slice(0, 6)
-      .map(
-        (item) => `
+    if (analysis) {
+      const proj = analysis.projected;
+      const tierLabel = analysis.tierStatus === "over" ? t("critical") : analysis.tierStatus === "near" ? t("nearingLimit") : t("healthy");
+      advice.push({ impact: analysis.tierStatus === "over" ? "high" : "low", title: `${t("aiProjection")}: ${formatNumber(proj)} ${t("kwh")}`, desc: `${tierLabel} — ${analysis.tierStatus === "over" ? `${formatNumber(analysis.tierDiff)} ${t("kwh")} ${t("adviceOverTitle")}` : `${formatNumber(analysis.tierDiff)} ${t("kwh")} ${t("budget")}`}` });
+    }
+
+    if (analysis && analysis.dayPattern.length) {
+      const peak = analysis.dayPattern[0];
+      advice.push({ impact: "medium", title: `${peak.day}: ${formatNumber(peak.avg)} ${t("kwh")}`, desc: `${t("adviceBalanceDesc")}` });
+    }
+
+    const budgetOver = log.meters.some((meter, idx) => {
+      const b = budgets[idx] || 0;
+      return b > 0 && meter.actualValue >= b;
+    });
+    const budgetNear = log.meters.some((meter, idx) => {
+      const b = budgets[idx] || 0;
+      return b > 0 && meter.actualValue >= b * 0.8 && meter.actualValue < b;
+    });
+    if (budgetOver || budgetNear) {
+      advice.push({ impact: "high", title: t("adviceBudgetTitle"), desc: t("adviceBudgetDesc") });
+    } else if (budgets.some((b) => b > 0)) {
+      advice.push({ impact: "low", title: t("adviceBudgetGreenTitle"), desc: t("adviceBudgetGreenDesc") });
+    }
+
+    if (facilityLogs().length) {
+      advice.push({ impact: "medium", title: t("adviceBalanceTitle"), desc: t("adviceBalanceDesc") });
+      advice.push({ impact: "medium", title: t("adviceDustTitle"), desc: t("adviceDustDesc") });
+      if (!overZones.length && total.actual < 900 && (!analysis || !analysis.anomalies.length)) {
+        advice.push({ impact: "low", title: t("adviceHealthyTitle"), desc: t("adviceHealthyDesc") });
+      }
+    }
+
+    const noData = !facilityLogs().length;
+    document.getElementById("adviceGrid").innerHTML = noData
+      ? `<article class="advice-card span-all"><p>${escapeHTML(t("aiAlertNoData"))}</p></article>`
+      : advice.slice(0, 6).map((item) => `
           <article class="advice-card">
             <span class="impact ${item.impact}">${escapeHTML(t(item.impact))}</span>
             <h3>${escapeHTML(item.title)}</h3>
             <p>${escapeHTML(item.desc)}</p>
           </article>
-        `
-      )
-      .join("");
+        `).join("");
+  }
+
+  function handleImportCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target.result;
+        const lines = text.split("\n").filter((l) => l.trim());
+        const groups = {};
+        for (let i = 1; i < lines.length; i++) {
+          const parts = lines[i].split(",").map((p) => p.replace(/^"|"$/g, "").trim());
+          if (parts.length < 6) continue;
+          const date = parts[0];
+          if (!groups[date]) groups[date] = [];
+          groups[date].push({
+            name: parts[1],
+            actual: parseFloat(parts[2]) || 0,
+            ideal: parseFloat(parts[3]) || 0
+          });
+        }
+        const imported = [];
+        for (const date of Object.keys(groups)) {
+          const meters = groups[date].map((m) => {
+            const pricing = getPricingDetails(m.actual);
+            return { name: m.name, actualValue: m.actual, idealValue: m.ideal, cost: pricing.cost };
+          });
+          const totalCost = meters.reduce((s, m) => s + m.cost, 0);
+          imported.push({ id: uid(), date, meters, facilityId: state.activeFacilityId, totalCost });
+        }
+        if (imported.length > 0) {
+          state.logs.push(...imported);
+          saveState();
+          renderAll();
+        }
+      } catch (err) {
+        console.error("CSV import error:", err);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = "";
   }
 
   function exportCSV() {
     const rows = [[t("reportDate"), t("zone"), t("actual"), t("ideal"), t("diff"), t("estBilling")]];
-    state.logs.forEach((log) => {
+    facilityLogs().forEach((log) => {
       log.meters.forEach((meter) => {
         const price = getPricingDetails(meter.actualValue);
         rows.push([log.date, meter.name, meter.actualValue, meter.idealValue, meter.idealValue - meter.actualValue, price.cost.toFixed(2)]);
@@ -757,7 +1600,6 @@
   }
 
   function resetData() {
-    if (!confirm(state.language === "ar" ? "هل تريد مسح البيانات المحفوظة؟" : "Reset saved dashboard data?")) return;
     localStorage.removeItem(STORAGE_KEY);
     location.reload();
   }
@@ -812,5 +1654,34 @@
     document.getElementById("manualNextBtn").textContent = manualIndex === slides.length - 1 ? t("close") : "Next";
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  function registerSW() {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
+  }
+
+  function showOnboarding() {
+    if (localStorage.getItem("ecowatt_onboarded")) return;
+    const overlay = document.getElementById("onbOverlay");
+    overlay.classList.remove("hidden");
+    const steps = [
+      t("onbStep1"),
+      t("onbStep2"),
+      t("onbStep3"),
+      t("onbStep4")
+    ];
+    document.getElementById("onbSteps").innerHTML = steps
+      .map((s, i) => `<div class="onb-step"><span class="onb-num">${i + 1}</span><span>${escapeHTML(s)}</span></div>`)
+      .join("");
+  }
+
+  function dismissOnboarding() {
+    localStorage.setItem("ecowatt_onboarded", "1");
+    document.getElementById("onbOverlay").classList.add("hidden");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    init();
+    registerSW();
+  });
 })();

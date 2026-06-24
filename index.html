@@ -1,38 +1,65 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="EcoWatt EG - static hotel energy audit dashboard." />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="EcoWatt" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon-192.svg" />
+  <link rel="apple-touch-icon" href="icon-192.svg" />
   <title>EcoWatt EG - Hotel Grid Optimizer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="app-header">
-    <div class="container header-inner">
-      <button class="brand" type="button" aria-label="EcoWatt home">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-brand">
         <span class="brand-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z"></path>
           </svg>
         </span>
-        <span>
+        <div class="sidebar-title">
           <strong data-i18n="title">EcoWatt EG</strong>
           <small data-i18n="subtitle">Hotel Grid Optimizer</small>
-        </span>
-      </button>
+        </div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Close sidebar">✕</button>
+    </div>
+    <div class="sidebar-facility" id="sidebarFacility">
+      <span class="sidebar-facility-icon">🏢</span>
+      <span class="sidebar-facility-name" id="sidebarFacilityName">My Facility</span>
+      <button class="sidebar-facility-btn" id="facilityManageBtn" type="button" title="Manage facilities">⚙</button>
+    </div>
+  </aside>
 
+  <div class="main-area">
+    <header class="app-header">
+      <div class="header-start">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">☰</button>
+        <span class="brand-icon-sm" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z"></path></svg>
+        </span>
+        <strong class="brand-name" data-i18n="title">EcoWatt EG</strong>
+      </div>
       <nav class="header-actions" aria-label="Dashboard actions">
         <button class="ghost-btn desktop-only" id="manualBtn" type="button" data-i18n="manualBtn">Strategy Manual</button>
         <button class="ghost-btn" id="languageBtn" type="button">AR</button>
         <button class="primary-btn" id="printBtn" type="button" data-i18n="pdfReport">PDF Report</button>
         <button class="success-btn" id="csvBtn" type="button" data-i18n="excelReport">CSV Data</button>
+        <button class="ghost-btn" id="importCsvBtn" type="button" data-i18n="importCSV">Import CSV</button>
+        <input type="file" accept=".csv" id="importCsvInput" style="display:none">
         <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle theme">
           <span id="themeIcon">☾</span>
         </button>
       </nav>
-    </div>
-  </header>
+    </header>
 
   <main class="container page-shell">
     <section class="hero-row">
@@ -44,6 +71,8 @@
     </section>
 
     <section class="stats-grid" id="statsGrid" aria-label="Energy summary cards"></section>
+
+    <section class="monthly-summary" id="monthlySummary" aria-label="Monthly summary"></section>
 
     <section class="status-panel" aria-label="Operational status">
       <div class="status-bg"></div>
@@ -83,6 +112,40 @@
       </div>
     </section>
 
+    <section class="card log-card">
+      <div class="form-head">
+        <h2 data-i18n="dailyEntry">Daily Grid Entry</h2>
+        <div class="edit-actions">
+          <button class="ghost-btn" id="editZonesBtn" type="button" data-i18n="editZones">Edit Zones</button>
+          <button class="ghost-btn hidden" id="cancelZonesBtn" type="button" data-i18n="cancel">Cancel</button>
+          <button class="success-btn hidden" id="saveZonesBtn" type="button" data-i18n="save">Save</button>
+        </div>
+      </div>
+
+      <div id="zoneEditor" class="zone-editor hidden"></div>
+
+      <form id="logForm" class="log-form">
+        <label class="field-label">
+          <span data-i18n="reportDate">Report Date</span>
+          <input id="entryDate" type="date" required />
+        </label>
+        <div class="meter-fields" id="meterFields"></div>
+        <button class="submit-btn" type="submit" data-i18n="syncReadings">Sync Readings</button>
+      </form>
+
+      <div class="success-summary hidden" id="successSummary">
+        <div class="success-mark">✓</div>
+        <h3 data-i18n="entrySuccess">Entry Synced Successfully</h3>
+        <p data-i18n="costBreakdown">Zone Cost Breakdown</p>
+        <div id="costBreakdown" class="breakdown-list"></div>
+        <div class="total-line">
+          <span data-i18n="totalAuditCost">Total Audit Cost</span>
+          <strong id="summaryTotal">0 EGP</strong>
+        </div>
+        <button class="submit-btn" id="newEntryBtn" type="button" data-i18n="newEntry">New Entry</button>
+      </div>
+    </section>
+
     <section class="dashboard-grid">
       <div class="main-column">
         <section class="card analytics-card">
@@ -96,12 +159,18 @@
               <button id="zoneViewBtn" type="button" data-view="zones" data-i18n="zones">Zones</button>
             </div>
           </div>
+          <div class="date-filter" id="dateFilter">
+            <label><span data-i18n="dateFrom">From</span><input type="date" id="dateFrom"></label>
+            <label><span data-i18n="dateTo">To</span><input type="date" id="dateTo"></label>
+          </div>
           <div class="chart-wrap">
             <canvas id="energyChart" width="900" height="460" aria-label="Energy chart"></canvas>
+            <div id="chartSkeleton" class="chart-skeleton"><div class="shimmer"></div></div>
           </div>
           <div class="chart-legend">
             <span><i class="actual-dot"></i><b data-i18n="actual">Actual</b></span>
             <span><i class="ideal-dot"></i><b data-i18n="ideal">Ideal</b></span>
+            <button class="ghost-btn export-png-btn" id="exportPngBtn" type="button" data-i18n="exportPNG">Export PNG</button>
           </div>
         </section>
 
@@ -116,42 +185,6 @@
           <div class="advice-grid" id="adviceGrid"></div>
         </section>
       </div>
-
-      <aside class="side-column">
-        <section class="card log-card">
-          <div class="form-head">
-            <h2 data-i18n="dailyEntry">Daily Grid Entry</h2>
-            <div class="edit-actions">
-              <button class="ghost-btn" id="editZonesBtn" type="button" data-i18n="editZones">Edit Zones</button>
-              <button class="ghost-btn hidden" id="cancelZonesBtn" type="button" data-i18n="cancel">Cancel</button>
-              <button class="success-btn hidden" id="saveZonesBtn" type="button" data-i18n="save">Save</button>
-            </div>
-          </div>
-
-          <div id="zoneEditor" class="zone-editor hidden"></div>
-
-          <form id="logForm" class="log-form">
-            <label class="field-label">
-              <span data-i18n="reportDate">Report Date</span>
-              <input id="entryDate" type="date" required />
-            </label>
-            <div class="meter-fields" id="meterFields"></div>
-            <button class="submit-btn" type="submit" data-i18n="syncReadings">Sync Readings</button>
-          </form>
-
-          <div class="success-summary hidden" id="successSummary">
-            <div class="success-mark">✓</div>
-            <h3 data-i18n="entrySuccess">Entry Synced Successfully</h3>
-            <p data-i18n="costBreakdown">Zone Cost Breakdown</p>
-            <div id="costBreakdown" class="breakdown-list"></div>
-            <div class="total-line">
-              <span data-i18n="totalAuditCost">Total Audit Cost</span>
-              <strong id="summaryTotal">0 EGP</strong>
-            </div>
-            <button class="submit-btn" id="newEntryBtn" type="button" data-i18n="newEntry">New Entry</button>
-          </div>
-        </section>
-      </aside>
     </section>
 
     <section class="card history-card">
@@ -170,10 +203,12 @@
               <th data-i18n="totalLoad">Total Current Load</th>
               <th data-i18n="idealLimit">Facility Ideal Limit</th>
               <th data-i18n="estBilling">Estimated Billing</th>
+              <th class="action-col"></th>
             </tr>
           </thead>
           <tbody id="historyBody"></tbody>
         </table>
+        <button class="ghost-btn load-more-btn" id="loadMoreBtn" type="button" data-i18n="loadMore">Load More</button>
       </div>
     </section>
   </main>
@@ -181,6 +216,8 @@
   <footer class="app-footer">
     <p data-i18n="footer">ECOWATT ENTERPRISE v3.0 | EGYPT GRID MODULE</p>
   </footer>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
   <section class="manual-modal hidden" id="manualModal" aria-modal="true" role="dialog">
     <div class="manual-panel">
@@ -201,6 +238,26 @@
       </div>
     </div>
   </section>
+
+  <div id="facilityModal" class="facility-modal hidden">
+    <div class="facility-modal-panel">
+      <div class="facility-modal-top">
+        <h2 data-i18n="facility">Facilities</h2>
+        <button class="icon-btn" id="closeFacilityModal" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="facility-modal-list" id="facilityModalList"></div>
+      <button class="facility-add-btn" id="addFacilityBtn" type="button" data-i18n="addFacility">+ Add Facility</button>
+    </div>
+  </div>
+
+  <div id="onbOverlay" class="onb-overlay hidden">
+    <div class="onb-modal">
+      <div class="onb-icon">⚡</div>
+      <h2 id="onbTitle" data-i18n="onbWelcome">Welcome to EcoWatt!</h2>
+      <div class="onb-steps" id="onbSteps"></div>
+      <button class="primary-btn" id="onbDoneBtn" type="button" data-i18n="onbDone">Got it!</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
