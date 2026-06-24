@@ -37,6 +37,7 @@
       <span class="sidebar-facility-name" id="sidebarFacilityName">My Facility</span>
       <button class="sidebar-facility-btn" id="facilityManageBtn" type="button" title="Manage facilities">⚙</button>
     </div>
+    <button class="sidebar-readings-btn" id="sidebarReadingsBtn" type="button">📅 <span data-i18n="logsNav">Readings</span></button>
   </aside>
 
   <div class="main-area">
@@ -247,6 +248,17 @@
       </div>
       <div class="facility-modal-list" id="facilityModalList"></div>
       <button class="facility-add-btn" id="addFacilityBtn" type="button" data-i18n="addFacility">+ Add Facility</button>
+    </div>
+  </div>
+
+  <div id="readingsModal" class="facility-modal hidden">
+    <div class="facility-modal-panel">
+      <div class="facility-modal-top" id="readingsModalTop">
+        <button class="icon-btn hidden" id="readingsBackBtn" type="button" aria-label="Back">←</button>
+        <h2 id="readingsModalTitle" data-i18n="logsNav">Readings</h2>
+        <button class="icon-btn" id="closeReadingsModal" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="readings-modal-body" id="readingsModalBody"></div>
     </div>
   </div>
 

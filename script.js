@@ -123,6 +123,7 @@
       aiComparedTo: "vs previous period",
       exportPNG: "Export PNG",
       loadMore: "Load More",
+      logsNav: "Readings",
       onbWelcome: "Welcome to EcoWatt!",
       onbStep1: "Enter daily readings for each zone",
       onbStep2: "View charts and trends",
@@ -257,6 +258,7 @@
       aiComparedTo: "مقارنة بالفترة السابقة",
       exportPNG: "تصدير PNG",
       loadMore: "عرض المزيد",
+      logsNav: "القراءات",
       onbWelcome: "مرحباً بك في EcoWatt!",
       onbStep1: "أدخل القراءات اليومية لكل منطقة",
       onbStep2: "شاهد المخططات والاتجاهات",
@@ -588,6 +590,12 @@
     document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
     document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSidebar(); });
+    document.getElementById("sidebarReadingsBtn").addEventListener("click", openReadingsModal);
+    document.getElementById("closeReadingsModal").addEventListener("click", closeReadingsModal);
+    document.getElementById("readingsModal").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) closeReadingsModal();
+    });
+    document.getElementById("readingsBackBtn").addEventListener("click", renderMonthsList);
     document.getElementById("dateFrom").addEventListener("change", (e) => {
       state.dateFrom = e.target.value;
       saveState();
@@ -1017,6 +1025,90 @@
     renderFacilitySelector();
   }
 
+  function openReadingsModal() {
+    document.getElementById("readingsModal").classList.remove("hidden");
+    renderMonthsList();
+  }
+
+  function closeReadingsModal() {
+    document.getElementById("readingsModal").classList.add("hidden");
+    document.getElementById("readingsBackBtn").classList.add("hidden");
+    document.getElementById("readingsModalTitle").textContent = t("logsNav");
+  }
+
+  function renderMonthsList() {
+    const body = document.getElementById("readingsModalBody");
+    document.getElementById("readingsBackBtn").classList.add("hidden");
+    document.getElementById("readingsModalTitle").textContent = t("logsNav");
+    const logs = facilityLogs();
+    if (!logs.length) {
+      body.innerHTML = `<div class="reading-empty">${escapeHTML(t("aiAlertNoData"))}</div>`;
+      return;
+    }
+    const groups = {};
+    logs.forEach((log) => {
+      const d = new Date(log.date);
+      const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(log);
+    });
+    const months = Object.keys(groups).sort().reverse();
+    body.innerHTML = months
+      .map((key) => {
+        const [y, m] = key.split("-");
+        const date = new Date(+y, +m - 1);
+        const label = date.toLocaleDateString(state.language, { year: "numeric", month: "long" });
+        return `<button class="reading-month" type="button" data-month="${key}">
+          <span class="reading-month-label">${escapeHTML(label)}</span>
+          <span class="reading-month-count">${groups[key].length}</span>
+          <span class="reading-month-arrow">›</span>
+        </button>`;
+      })
+      .join("");
+    body.querySelectorAll(".reading-month").forEach((btn) => {
+      btn.addEventListener("click", () => renderDaysList(btn.dataset.month));
+    });
+  }
+
+  function renderDaysList(monthKey) {
+    const body = document.getElementById("readingsModalBody");
+    const [y, m] = monthKey.split("-");
+    const date = new Date(+y, +m - 1);
+    const label = date.toLocaleDateString(state.language, { year: "numeric", month: "long" });
+    document.getElementById("readingsBackBtn").classList.remove("hidden");
+    document.getElementById("readingsModalTitle").textContent = label;
+    const days = facilityLogs()
+      .filter((l) => {
+        const d = new Date(l.date);
+        const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+        return key === monthKey;
+      })
+      .sort((a, b) => b.date.localeCompare(a.date));
+    body.innerHTML = days
+      .map((d) => {
+        const t = totals(d);
+        const totalKwh = t ? t.totalActual : 0;
+        const dayLabel = new Date(d.date).toLocaleDateString(state.language, { weekday: "short", day: "numeric", month: "short" });
+        return `<button class="reading-day" type="button" data-id="${escapeHTML(d.id)}">
+          <span class="reading-day-label">${escapeHTML(dayLabel)}</span>
+          <span class="reading-day-total">${escapeHTML(formatNumber(totalKwh))} kWh</span>
+        </button>`;
+      })
+      .join("");
+    body.querySelectorAll(".reading-day").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        scrollToLog(btn.dataset.id);
+        closeReadingsModal();
+        closeSidebar();
+      });
+    });
+  }
+
+  function scrollToLog(id) {
+    const row = document.querySelector(`#historyBody tr[data-id="${CSS.escape(id)}"]`);
+    if (row) row.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   function renderFacilitySelector() {
     const list = document.getElementById("facilityModalList");
     const single = state.facilities.length <= 1;
@@ -1166,7 +1258,7 @@
       .map((log) => {
         const total = totals(log);
         return `
-          <tr class="${editingLogId === log.id ? "editing-row" : ""}">
+          <tr data-id="${escapeHTML(log.id)}" class="${editingLogId === log.id ? "editing-row" : ""}">
             <td>${escapeHTML(new Date(log.date).toLocaleDateString(state.language))}</td>
             <td>${formatNumber(total.actual)} ${escapeHTML(t("kwh"))}</td>
             <td>${formatNumber(total.ideal)} ${escapeHTML(t("kwh"))}</td>
