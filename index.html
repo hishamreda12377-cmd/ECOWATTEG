@@ -73,8 +73,6 @@
 
     <section class="stats-grid" id="statsGrid" aria-label="Energy summary cards"></section>
 
-    <section class="monthly-summary" id="monthlySummary" aria-label="Monthly summary"></section>
-
     <section class="status-panel" aria-label="Operational status">
       <div class="status-bg"></div>
       <div class="status-top">
@@ -159,10 +157,6 @@
               <button class="active" id="trendViewBtn" type="button" data-view="trends" data-i18n="trends">Trends</button>
               <button id="zoneViewBtn" type="button" data-view="zones" data-i18n="zones">Zones</button>
             </div>
-          </div>
-          <div class="date-filter" id="dateFilter">
-            <label><span data-i18n="dateFrom">From</span><input type="date" id="dateFrom"></label>
-            <label><span data-i18n="dateTo">To</span><input type="date" id="dateTo"></label>
           </div>
           <div class="chart-wrap">
             <canvas id="energyChart" width="900" height="460" aria-label="Energy chart"></canvas>

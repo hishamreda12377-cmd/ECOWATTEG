@@ -321,10 +321,7 @@
   }
 
   function filteredLogs() {
-    let logs = facilityLogs();
-    if (state.dateFrom) logs = logs.filter((l) => l.date >= state.dateFrom);
-    if (state.dateTo) logs = logs.filter((l) => l.date <= state.dateTo);
-    return logs;
+    return facilityLogs();
   }
 
   function loadState() {
@@ -470,8 +467,6 @@
   function init() {
     bindEvents();
     document.getElementById("entryDate").value = todayISO();
-    if (state.dateFrom) document.getElementById("dateFrom").value = state.dateFrom;
-    if (state.dateTo) document.getElementById("dateTo").value = state.dateTo;
     applyLanguage();
     renderAll();
     renderFacilitySelector();
@@ -595,18 +590,12 @@
     document.getElementById("readingsModal").addEventListener("click", (e) => {
       if (e.target === e.currentTarget) closeReadingsModal();
     });
-    document.getElementById("readingsBackBtn").addEventListener("click", renderMonthsList);
-    document.getElementById("dateFrom").addEventListener("change", (e) => {
-      state.dateFrom = e.target.value;
-      saveState();
-      drawChart();
-      renderAdvice();
-    });
-    document.getElementById("dateTo").addEventListener("change", (e) => {
-      state.dateTo = e.target.value;
-      saveState();
-      drawChart();
-      renderAdvice();
+    document.getElementById("readingsBackBtn").addEventListener("click", () => {
+      if (window._drillLevel === 2) {
+        renderDaysList(window._drillMonthKey);
+      } else {
+        renderMonthsList();
+      }
     });
   }
 
@@ -649,7 +638,6 @@
   function renderAll() {
     renderStats();
     renderStatus();
-    renderMonthlySummary();
     renderMeterFields();
     renderHistory();
     renderAdvice();
@@ -741,49 +729,6 @@
         `;
       })
       .join("");
-  }
-
-  function renderMonthlySummary() {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-    const monthLogs = facilityLogs().filter((log) => {
-      const d = new Date(log.date);
-      return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-    });
-    let totalActual = 0;
-    let maxDay = 0;
-    let totalCost = 0;
-    monthLogs.forEach((log) => {
-      const t = totals(log);
-      totalActual += t.actual;
-      maxDay = Math.max(maxDay, t.actual);
-      totalCost += log.totalCost;
-    });
-    const daysSoFar = Math.max(1, now.getDate());
-    const dailyAvg = totalActual / daysSoFar;
-
-    const el = document.getElementById("monthlySummary");
-    el.innerHTML = `
-      <div class="summary-row">
-        <div class="summary-stat">
-          <span class="summary-value">${formatNumber(totalActual)}</span>
-          <span class="summary-label">${escapeHTML(t("monthTotal"))} (${escapeHTML(t("kwh"))})</span>
-        </div>
-        <div class="summary-stat">
-          <span class="summary-value">${formatNumber(dailyAvg)}</span>
-          <span class="summary-label">${escapeHTML(t("dailyAvg"))} (${escapeHTML(t("kwh"))})</span>
-        </div>
-        <div class="summary-stat">
-          <span class="summary-value">${formatNumber(maxDay)}</span>
-          <span class="summary-label">${escapeHTML(t("peakDay"))} (${escapeHTML(t("kwh"))})</span>
-        </div>
-        <div class="summary-stat">
-          <span class="summary-value">${formatNumber(totalCost, 2)}</span>
-          <span class="summary-label">${escapeHTML(t("monthCost"))} (${escapeHTML(t("egp"))})</span>
-        </div>
-      </div>
-    `;
   }
 
   function exportChartPNG() {
@@ -1037,6 +982,8 @@
   }
 
   function renderMonthsList() {
+    window._drillLevel = 1;
+    window._drillMonthKey = null;
     const body = document.getElementById("readingsModalBody");
     document.getElementById("readingsBackBtn").classList.add("hidden");
     document.getElementById("readingsModalTitle").textContent = t("logsNav");
@@ -1053,24 +1000,43 @@
       groups[key].push(log);
     });
     const months = Object.keys(groups).sort().reverse();
-    body.innerHTML = months
-      .map((key) => {
-        const [y, m] = key.split("-");
-        const date = new Date(+y, +m - 1);
-        const label = date.toLocaleDateString(state.language, { year: "numeric", month: "long" });
-        return `<button class="reading-month" type="button" data-month="${key}">
-          <span class="reading-month-label">${escapeHTML(label)}</span>
-          <span class="reading-month-count">${groups[key].length}</span>
-          <span class="reading-month-arrow">›</span>
-        </button>`;
-      })
-      .join("");
-    body.querySelectorAll(".reading-month").forEach((btn) => {
-      btn.addEventListener("click", () => renderDaysList(btn.dataset.month));
+    body.innerHTML = `
+      <table class="readings-table">
+        <thead><tr>
+          <th>${escapeHTML(t("logsNav"))}</th>
+          <th class="num">kWh</th>
+          <th class="num">EGP</th>
+          <th class="num">#</th>
+        </tr></thead>
+        <tbody>
+          ${months.map((key) => {
+            const [y, m] = key.split("-");
+            const date = new Date(+y, +m - 1);
+            const label = date.toLocaleDateString(state.language, { year: "numeric", month: "long" });
+            const monthLogs = groups[key];
+            let totalKwh = 0, totalCost = 0;
+            monthLogs.forEach((log) => {
+              const t = totals(log);
+              if (t) totalKwh += t.actual;
+              totalCost += log.totalCost || 0;
+            });
+            return `<tr data-month="${key}">
+              <td>${escapeHTML(label)}</td>
+              <td class="num">${escapeHTML(formatNumber(totalKwh))}</td>
+              <td class="num">${escapeHTML(formatNumber(totalCost, 2))}</td>
+              <td class="num">${monthLogs.length}</td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>`;
+    body.querySelectorAll("tbody tr").forEach((row) => {
+      row.addEventListener("click", () => renderDaysList(row.dataset.month));
     });
   }
 
   function renderDaysList(monthKey) {
+    window._drillLevel = 2;
+    window._drillMonthKey = monthKey;
     const body = document.getElementById("readingsModalBody");
     const [y, m] = monthKey.split("-");
     const date = new Date(+y, +m - 1);
@@ -1084,23 +1050,93 @@
         return key === monthKey;
       })
       .sort((a, b) => b.date.localeCompare(a.date));
-    body.innerHTML = days
-      .map((d) => {
-        const t = totals(d);
-        const totalKwh = t ? t.totalActual : 0;
-        const dayLabel = new Date(d.date).toLocaleDateString(state.language, { weekday: "short", day: "numeric", month: "short" });
-        return `<button class="reading-day" type="button" data-id="${escapeHTML(d.id)}">
-          <span class="reading-day-label">${escapeHTML(dayLabel)}</span>
-          <span class="reading-day-total">${escapeHTML(formatNumber(totalKwh))} kWh</span>
-        </button>`;
-      })
-      .join("");
-    body.querySelectorAll(".reading-day").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        scrollToLog(btn.dataset.id);
-        closeReadingsModal();
-        closeSidebar();
-      });
+    let monthKwh = 0, monthCost = 0;
+    days.forEach((l) => {
+      const t = totals(l);
+      if (t) monthKwh += t.actual;
+      monthCost += l.totalCost || 0;
+    });
+    const zoneNames = fac().meterNames;
+    body.innerHTML = `
+      <div class="month-summary">
+        <div class="ms-item"><span class="ms-label">kWh</span><span class="ms-value">${escapeHTML(formatNumber(monthKwh))}</span></div>
+        <div class="ms-item"><span class="ms-label">${escapeHTML(t("logsNav"))}</span><span class="ms-value">${days.length}</span></div>
+      </div>
+      <table class="readings-table">
+        <thead><tr>
+          <th>${escapeHTML(t("reportDate"))}</th>
+          ${zoneNames.map((name) => `<th class="num">${escapeHTML(name)}</th>`).join("")}
+          <th class="num">kWh</th>
+          <th class="num">EGP</th>
+        </tr></thead>
+        <tbody>
+          ${days.map((d) => {
+            const t = totals(d);
+            const dayLabel = new Date(d.date).toLocaleDateString(state.language, { weekday: "short", day: "numeric", month: "short" });
+            return `<tr data-id="${escapeHTML(d.id)}">
+              <td>${escapeHTML(dayLabel)}</td>
+              ${zoneNames.map((_, idx) => {
+                const meter = d.meters[idx];
+                return `<td class="num">${meter ? escapeHTML(formatNumber(meter.actualValue)) : "–"}</td>`;
+              }).join("")}
+              <td class="num">${t ? escapeHTML(formatNumber(t.actual)) : "–"}</td>
+              <td class="num">${escapeHTML(formatNumber(d.totalCost || 0, 2))}</td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>`;
+    body.querySelectorAll("tbody tr").forEach((row) => {
+      row.addEventListener("click", () => renderDayDetail(row.dataset.id));
+    });
+  }
+
+  function renderDayDetail(dayId) {
+    window._drillLevel = 3;
+    const body = document.getElementById("readingsModalBody");
+    const log = state.logs.find((l) => l.id === dayId);
+    if (!log) { renderDaysList(window._drillMonthKey); return; }
+    const dayLabel = new Date(log.date).toLocaleDateString(state.language, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    document.getElementById("readingsBackBtn").classList.remove("hidden");
+    document.getElementById("readingsModalTitle").textContent = dayLabel;
+    const ttl = totals(log);
+    const totalKwh = ttl ? ttl.actual : 0;
+    const pricing = getPricingDetails(totalKwh);
+    const zoneNames = fac().meterNames;
+    const zoneColors = fac().zoneColors;
+    body.innerHTML = `
+      <div class="day-detail-header">
+        <div class="dd-date">${escapeHTML(dayLabel)}</div>
+        <div class="dd-totals">${escapeHTML(formatNumber(totalKwh))} kWh · ${escapeHTML(formatNumber(log.totalCost || 0, 2))} EGP · ${escapeHTML(pricing.tier)}</div>
+      </div>
+      ${log.meters.map((meter, idx) => {
+        const ideal = meter.idealValue || 0;
+        const actual = meter.actualValue || 0;
+        const diff = ideal - actual;
+        const sectionCost = totalKwh > 0 ? (actual / totalKwh) * (log.totalCost || 0) : 0;
+        const statusClass = diff < 0 ? "over" : "ok";
+        const statusIcon = diff < 0 ? "⚠" : "✓";
+        const color = zoneColors[idx] || "#888";
+        return `
+          <div class="day-section-card">
+            <div class="dsc-color" style="background:${color}"></div>
+            <div class="dsc-info">
+              <div class="dsc-name">${escapeHTML(zoneNames[idx] || t("zone") + " " + (idx + 1))}</div>
+              <div class="dsc-details">
+                <span>${escapeHTML(t("actual"))}: ${escapeHTML(formatNumber(actual))} kWh</span>
+                <span>${escapeHTML(t("ideal"))}: ${escapeHTML(formatNumber(ideal))} kWh</span>
+                <span>${escapeHTML(t("estBilling"))}: ${escapeHTML(formatNumber(sectionCost, 2))} EGP</span>
+              </div>
+            </div>
+            <div class="dsc-status ${statusClass}">${statusIcon}</div>
+          </div>`;
+      }).join("")}
+      <div style="text-align:center;padding:12px;font-size:11px;color:var(--muted)">
+        <button class="ghost-btn" style="display:inline-flex" id="ddScrollBtn" type="button">${escapeHTML(t("historyTitle"))} →</button>
+      </div>`;
+    document.getElementById("ddScrollBtn").addEventListener("click", () => {
+      scrollToLog(dayId);
+      closeReadingsModal();
+      closeSidebar();
     });
   }
 
@@ -1298,18 +1334,33 @@
     if (!canvas) return;
     const skeleton = document.getElementById("chartSkeleton");
     if (skeleton) skeleton.classList.remove("hidden");
+    const wrap = canvas.closest(".chart-wrap");
+    const exportBtn = document.getElementById("exportPngBtn");
 
-    const rect = canvas.getBoundingClientRect();
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = Math.max(320, Math.floor(rect.width * ratio));
-    canvas.height = Math.max(260, Math.floor(rect.height * ratio));
-
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    ctx.clearRect(0, 0, rect.width, rect.height);
-
-    if (chartView === "zones") drawZoneChart(ctx, rect.width, rect.height);
-    else drawTrendChart(ctx, rect.width, rect.height);
+    if (chartView === "zones") {
+      canvas.classList.remove("hidden");
+      if (exportBtn) exportBtn.classList.remove("hidden");
+      const el = wrap.querySelector(".trends-table");
+      if (el) el.remove();
+      const rect = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.max(320, Math.floor(rect.width * ratio));
+      canvas.height = Math.max(260, Math.floor(rect.height * ratio));
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      drawZoneChart(ctx, rect.width, rect.height);
+    } else {
+      canvas.classList.add("hidden");
+      let container = wrap.querySelector(".trends-table");
+      if (!container) {
+        container = document.createElement("div");
+        container.className = "trends-table";
+        wrap.appendChild(container);
+      }
+      renderTrendsTable(container);
+      if (exportBtn) exportBtn.classList.add("hidden");
+    }
 
     if (skeleton) skeleton.classList.add("hidden");
   }
@@ -1325,52 +1376,93 @@
     };
   }
 
-  function drawTrendChart(ctx, width, height) {
-    const colors = chartColors();
-    const pad = { top: 20, right: 26, bottom: 48, left: state.language === "ar" ? 26 : 46 };
+  function renderTrendsTable(container) {
     const data = filteredLogs()
-      .map((log) => ({ date: log.date, ...totals(log) }))
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
+      .map((log) => ({ date: log.date, ...totals(log), cost: log.totalCost || 0 }))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     if (!data.length) {
-      ctx.fillStyle = colors.text;
-      ctx.font = "800 14px system-ui";
-      ctx.textAlign = "center";
-      ctx.fillText(t("aiAlertNoData"), width / 2, height / 2);
+      container.innerHTML = `<div class="trends-empty">${escapeHTML(t("aiAlertNoData"))}</div>`;
       return;
     }
 
-    const values = data.flatMap((item) => [item.actual, item.ideal]);
-    const max = Math.max(100, ...values) * 1.12;
-    const plotW = width - pad.left - pad.right;
-    const plotH = height - pad.top - pad.bottom;
+    let totalActual = 0, totalIdeal = 0, totalCost = 0, count = 0;
+    const allActual = data.map((d) => d.actual);
+    const maxAll = Math.max(...allActual, ...data.map((d) => d.ideal), 1);
 
-    drawGrid(ctx, width, height, pad, max, colors);
+    const chartData = [...data].reverse();
+    const chartBars = chartData.map((item) => {
+      const over = item.actual > item.ideal;
+      return `<div class="trend-chart-col">
+        <div class="trend-chart-bars">
+          <div class="trend-chart-bar ideal-bar" style="height:${(item.ideal / maxAll) * 100}%"></div>
+          <div class="trend-chart-bar actual-bar ${over ? "over" : ""}" style="height:${(item.actual / maxAll) * 100}%"></div>
+        </div>
+        <span class="trend-chart-label">${escapeHTML(new Date(item.date).toLocaleDateString(state.language, { day: "numeric", month: "short" }))}</span>
+      </div>`;
+    }).join("");
 
-    const point = (item, index, key) => {
-      const x = pad.left + (data.length === 1 ? plotW / 2 : (index / (data.length - 1)) * plotW);
-      const y = pad.top + plotH - (item[key] / max) * plotH;
-      return [x, y];
-    };
+    let rows = data.map((item, i) => {
+      totalActual += item.actual;
+      totalIdeal += item.ideal;
+      totalCost += item.cost;
+      count++;
+      const diff = item.ideal - item.actual;
+      const over = diff < 0;
+      const pct = item.ideal > 0 ? ((item.actual / item.ideal) * 100).toFixed(1) : "–";
+      const trendIcon = i < data.length - 1
+        ? (item.actual > data[i + 1].actual ? "↑" : item.actual < data[i + 1].actual ? "↓" : "→")
+        : "→";
+      const trendColor = trendIcon === "↑" ? "#ef4444" : trendIcon === "↓" ? "#22c55e" : "#94a3b8";
+      const dateLabel = new Date(item.date).toLocaleDateString(state.language, { day: "numeric", month: "short", year: "numeric" });
+      const barPct = (item.actual / maxAll) * 100;
+      const idealPct = (item.ideal / maxAll) * 100;
+      const rowClass = over ? "trend-over" : "trend-ok";
+      return `<tr class="${rowClass}">
+        <td>${escapeHTML(dateLabel)}</td>
+        <td class="num">
+          <div class="trend-bar-wrap">
+            <span class="trend-bar" style="width:${barPct}%"></span>
+            <span>${escapeHTML(formatNumber(item.actual))}</span>
+          </div>
+        </td>
+        <td class="num">
+          <div class="trend-bar-wrap trend-bar-ideal">
+            <span class="trend-bar" style="width:${idealPct}%"></span>
+            <span>${escapeHTML(formatNumber(item.ideal))}</span>
+          </div>
+        </td>
+        <td class="num" style="color:${over ? "var(--red)" : "var(--green)"}">${over ? "+" : ""}${escapeHTML(formatNumber(Math.abs(diff)))}</td>
+        <td class="num"><span class="trend-arrow" style="color:${trendColor}">${trendIcon}</span> ${escapeHTML(pct)}%</td>
+        <td class="num">${escapeHTML(formatNumber(item.cost, 2))}</td>
+      </tr>`;
+    }).join("");
 
-    drawLine(ctx, data.map((item, i) => point(item, i, "actual")), colors.actual, 4, colors.fill, pad.top + plotH);
-    drawLine(ctx, data.map((item, i) => point(item, i, "ideal")), colors.ideal, 2, null, null, [8, 8]);
+    const totalDiff = totalIdeal - totalActual;
+    const totalOver = totalDiff < 0;
 
-    ctx.fillStyle = colors.text;
-    ctx.font = "800 11px system-ui";
-    ctx.textAlign = "center";
-    data.forEach((item, index) => {
-      const [x] = point(item, index, "actual");
-      const label = new Date(item.date).toLocaleDateString(state.language, { day: "numeric", month: "short" });
-      ctx.fillText(label, x, height - 18);
-    });
-
-    ctx.fillStyle = colors.actual;
-    ctx.font = "700 12px system-ui";
-    data.forEach((item, index) => {
-      const [x, y] = point(item, index, "actual");
-      ctx.fillText(formatNumber(item.actual), x, y - 10);
-    });
+    container.innerHTML = `
+      <div class="trend-chart">
+        <div class="trend-chart-inner">${chartBars}</div>
+        <div class="trend-chart-legend">
+          <span><i class="legend-dot actual-dot"></i> ${escapeHTML(t("actual"))}</span>
+          <span><i class="legend-dot ideal-dot"></i> ${escapeHTML(t("ideal"))}</span>
+        </div>
+      </div>
+      <div class="trends-scroll">
+        <table class="trends-data-table">
+          <thead><tr>
+            <th>${escapeHTML(t("reportDate"))}</th>
+            <th class="num">${escapeHTML(t("actual"))}</th>
+            <th class="num">${escapeHTML(t("ideal"))}</th>
+            <th class="num">${escapeHTML(t("diff"))}</th>
+            <th class="num">%</th>
+            <th class="num">${escapeHTML(t("estBilling"))}</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `;
   }
 
   function drawZoneChart(ctx, width, height) {
@@ -1390,6 +1482,12 @@
       ctx.moveTo(x, pad.top);
       ctx.lineTo(x, height - pad.bottom);
       ctx.stroke();
+
+      ctx.fillStyle = colors.text;
+      ctx.font = "700 10px system-ui";
+      ctx.textAlign = "center";
+      const val = Math.round((max * i) / 4);
+      ctx.fillText(formatNumber(val), x, height - pad.bottom + 16);
     }
 
     log.meters.forEach((meter, index) => {
@@ -1403,17 +1501,42 @@
       const actualW = (meter.actualValue / max) * plotW;
       const idealW = (meter.idealValue / max) * plotW;
       const zColor = zoneColors[index] || colors.actual;
-      roundRect(ctx, pad.left, y + 2, idealW, 14, 7, colors.ideal, 0.45);
-      roundRect(ctx, pad.left, y + 21, actualW, 14, 7, zColor, 1);
+      const over = meter.actualValue > meter.idealValue;
+
+      ctx.globalAlpha = 0.25;
+      roundRect(ctx, pad.left, y + 2, Math.max(idealW, 2), 14, 7, colors.ideal, 0.25);
+      ctx.globalAlpha = 1;
+
+      ctx.shadowColor = zColor;
+      ctx.shadowBlur = 8;
+      ctx.globalAlpha = 0.85;
+      roundRect(ctx, pad.left, y + 21, Math.max(actualW, 2), 14, 7, zColor, 0.85);
+      ctx.shadowBlur = 0;
+
+      const statusDot = over ? "●" : "○";
+      ctx.font = "700 12px system-ui";
+      ctx.fillStyle = over ? "#ef4444" : "#22c55e";
+      const statusX = state.language === "ar" ? pad.left - 4 : pad.left + plotW + 10;
+      ctx.textAlign = "center";
 
       ctx.font = "700 11px system-ui";
       ctx.fillStyle = colors.text;
       ctx.textAlign = "left";
+      ctx.globalAlpha = 0.6;
       const idealLabel = formatNumber(meter.idealValue);
-      const actualLabel = formatNumber(meter.actualValue);
       ctx.fillText(idealLabel, pad.left + idealW + 6, y + 14);
+      ctx.globalAlpha = 1;
       ctx.fillStyle = zColor;
+      const actualLabel = formatNumber(meter.actualValue);
       ctx.fillText(actualLabel, pad.left + actualW + 6, y + 33);
+
+      if (over) {
+        const exW = Math.max(2, ((meter.actualValue - meter.idealValue) / max) * plotW);
+        ctx.fillStyle = "#ef4444";
+        ctx.globalAlpha = 0.15;
+        roundRect(ctx, pad.left + idealW, y + 21, exW, 14, 7, "#ef4444", 0.15);
+        ctx.globalAlpha = 1;
+      }
     });
   }
 
