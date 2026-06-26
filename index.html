@@ -25,9 +25,7 @@
       <nav class="header-actions" aria-label="Dashboard actions">
         <button class="ghost-btn desktop-only" id="manualBtn" type="button" data-i18n="manualBtn">Strategy Manual</button>
         <button class="ghost-btn" id="languageBtn" type="button">AR</button>
-        <button class="primary-btn" id="printBtn" type="button" data-i18n="pdfReport">PDF Report</button>
-        <button class="success-btn" id="csvBtn" type="button" data-i18n="excelReport">CSV Data</button>
-        <button class="ghost-btn" id="importCsvBtn" type="button" data-i18n="importCSV">Import CSV</button>
+        <button class="ghost-btn" id="dataMgrBtn" type="button" data-i18n="dataMgr">📊 ادارة البيانات</button>
         <input type="file" accept=".csv" id="importCsvInput" style="display:none">
         <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle theme">
           <span id="themeIcon">☾</span>
@@ -223,6 +221,18 @@
       </div>
       <div class="facility-modal-list" id="facilityModalList"></div>
       <button class="facility-add-btn" id="addFacilityBtn" type="button" data-i18n="addFacility">+ Add Facility</button>
+    </div>
+  </div>
+
+  <div id="dataMgrModal" class="facility-modal hidden">
+    <div class="facility-modal-panel data-mgr-panel">
+      <div class="facility-modal-top">
+        <h2 data-i18n="dataMgr">ادارة البيانات</h2>
+        <button class="icon-btn" id="closeDataMgrModal" type="button" aria-label="Close">×</button>
+      </div>
+      <button class="data-mgr-option" id="dataMgrPdf" type="button">📄 <span data-i18n="pdfReport">PDF Report</span></button>
+      <button class="data-mgr-option" id="dataMgrCsv" type="button">📊 <span data-i18n="excelReport">CSV Data</span></button>
+      <button class="data-mgr-option" id="dataMgrImport" type="button">📥 <span data-i18n="importCSV">Import CSV</span></button>
     </div>
   </div>
 

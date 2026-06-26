@@ -516,10 +516,36 @@
   function bindEvents() {
     document.getElementById("themeBtn").addEventListener("click", toggleTheme);
     document.getElementById("languageBtn").addEventListener("click", toggleLanguage);
-    document.getElementById("printBtn").addEventListener("click", () => window.print());
-    document.getElementById("csvBtn").addEventListener("click", exportCSV);
+    document.getElementById("dataMgrBtn").addEventListener("click", () => {
+      document.getElementById("dataMgrModal").classList.remove("hidden");
+      lockScroll();
+    });
+    document.getElementById("closeDataMgrModal").addEventListener("click", () => {
+      document.getElementById("dataMgrModal").classList.add("hidden");
+      unlockScroll();
+    });
+    document.getElementById("dataMgrPdf").addEventListener("click", () => {
+      document.getElementById("dataMgrModal").classList.add("hidden");
+      unlockScroll();
+      window.print();
+    });
+    document.getElementById("dataMgrCsv").addEventListener("click", () => {
+      document.getElementById("dataMgrModal").classList.add("hidden");
+      unlockScroll();
+      exportCSV();
+    });
+    document.getElementById("dataMgrImport").addEventListener("click", () => {
+      document.getElementById("dataMgrModal").classList.add("hidden");
+      unlockScroll();
+      document.getElementById("importCsvInput").click();
+    });
+    document.getElementById("dataMgrModal").addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        document.getElementById("dataMgrModal").classList.add("hidden");
+        unlockScroll();
+      }
+    });
     document.getElementById("importCsvInput").addEventListener("change", handleImportCSV);
-    document.getElementById("importCsvBtn").addEventListener("click", () => document.getElementById("importCsvInput").click());
     document.getElementById("infoToggle").addEventListener("click", () => {
       document.getElementById("complianceBox").classList.toggle("hidden");
     });
@@ -969,12 +995,14 @@
   function openReadingsModal() {
     document.getElementById("readingsModal").classList.remove("hidden");
     renderMonthsList();
+    lockScroll();
   }
 
   function closeReadingsModal() {
     document.getElementById("readingsModal").classList.add("hidden");
     document.getElementById("readingsBackBtn").classList.add("hidden");
     document.getElementById("readingsModalTitle").textContent = t("logsNav");
+    unlockScroll();
   }
 
   function renderMonthsList() {
@@ -1176,13 +1204,23 @@
     document.getElementById("toolbarFacilityName").textContent = fac().name;
   }
 
+  function lockScroll() {
+    document.body.style.overflow = "hidden";
+  }
+
+  function unlockScroll() {
+    document.body.style.overflow = "";
+  }
+
   function openFacilityModal() {
     renderFacilitySelector();
     document.getElementById("facilityModal").classList.remove("hidden");
+    lockScroll();
   }
 
   function closeFacilityModal() {
     document.getElementById("facilityModal").classList.add("hidden");
+    unlockScroll();
   }
 
   function renameFacility(id) {

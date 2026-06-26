@@ -802,6 +802,34 @@ body[dir="rtl"] .facility-modal-row {
   direction: ltr;
 }
 
+.data-mgr-panel {
+  max-width: 320px;
+}
+
+.data-mgr-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.data-mgr-option:hover {
+  background: var(--panel-2);
+}
+
+.data-mgr-option:last-child {
+  border-radius: 0 0 24px 24px;
+}
+
 .ghost-btn,
 .primary-btn,
 .success-btn,
@@ -1999,7 +2027,7 @@ body[dir="rtl"] .onb-steps {
 .meter-row input {
   width: 100%;
   min-height: 50px;
-  border: 2px solid transparent;
+  border: 1.5px solid var(--line);
   border-radius: 16px;
   background: var(--panel-2);
   color: var(--text);
