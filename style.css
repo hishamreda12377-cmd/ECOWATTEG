@@ -1,4 +1,8 @@
-﻿:root {
+﻿@media screen {
+  html { zoom: 0.9; }
+}
+
+:root {
   color-scheme: light;
   --bg: #f8fafc;
   --panel: #ffffff;
@@ -126,7 +130,7 @@ button {
 }
 
 .header-actions {
-  gap: 8px;
+  gap: 6px;
 }
 
 .app-header {
@@ -197,6 +201,30 @@ button {
   align-items: center;
   gap: 8px;
   margin-inline-start: auto;
+}
+
+.header-actions button {
+  padding: 6px 12px;
+  font-size: 12px;
+  min-height: 34px;
+}
+
+.header-actions .icon-btn {
+  padding: 6px;
+  min-height: 36px;
+  min-width: 36px;
+  font-size: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.header-actions .icon-btn:hover {
+  background: var(--panel-2);
+  border-color: var(--muted);
+  transform: scale(1.08);
 }
 
 /* ── Sidebar ── */
