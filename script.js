@@ -572,7 +572,6 @@
     document.getElementById("manualPrevBtn").addEventListener("click", () => moveManual(-1));
     document.getElementById("manualNextBtn").addEventListener("click", () => moveManual(1));
     document.getElementById("onbDoneBtn").addEventListener("click", dismissOnboarding);
-    document.getElementById("facilityManageBtn").addEventListener("click", openFacilityModal);
     document.getElementById("closeFacilityModal").addEventListener("click", closeFacilityModal);
     document.getElementById("addFacilityBtn").addEventListener("click", () => {
       addNewFacility();
@@ -581,11 +580,8 @@
     document.getElementById("facilityModal").addEventListener("click", (e) => {
       if (e.target === e.currentTarget) closeFacilityModal();
     });
-    document.getElementById("sidebarToggle").addEventListener("click", toggleSidebar);
-    document.getElementById("sidebarClose").addEventListener("click", closeSidebar);
-    document.getElementById("sidebarOverlay").addEventListener("click", closeSidebar);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSidebar(); });
-    document.getElementById("sidebarReadingsBtn").addEventListener("click", openReadingsModal);
+    document.getElementById("readingsToolbarBtn").addEventListener("click", openReadingsModal);
+    document.getElementById("toolbarFacilityManageBtn").addEventListener("click", openFacilityModal);
     document.getElementById("closeReadingsModal").addEventListener("click", closeReadingsModal);
     document.getElementById("readingsModal").addEventListener("click", (e) => {
       if (e.target === e.currentTarget) closeReadingsModal();
@@ -1136,7 +1132,6 @@
     document.getElementById("ddScrollBtn").addEventListener("click", () => {
       scrollToLog(dayId);
       closeReadingsModal();
-      closeSidebar();
     });
   }
 
@@ -1178,7 +1173,7 @@
         removeFacility(btn.dataset.id);
       });
     });
-    document.getElementById("sidebarFacilityName").textContent = fac().name;
+    document.getElementById("toolbarFacilityName").textContent = fac().name;
   }
 
   function openFacilityModal() {
@@ -1188,16 +1183,6 @@
 
   function closeFacilityModal() {
     document.getElementById("facilityModal").classList.add("hidden");
-  }
-
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-    document.getElementById("sidebarOverlay").classList.toggle("open");
-  }
-
-  function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("open");
-    document.getElementById("sidebarOverlay").classList.remove("open");
   }
 
   function renameFacility(id) {
